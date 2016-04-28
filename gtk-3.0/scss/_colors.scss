@@ -13,6 +13,8 @@
 @define-color theme_selected_fg_color #{"" + $selected_fg_color};
 @define-color theme_tooltip_bg_color #{"" + $tooltip_bg_color};
 @define-color theme_tooltip_fg_color #{"" + $tooltip_fg_color};
+@define-color theme_tab_active_bg_color #{"" + $tab_active_bg_color};
+@define-color theme_tab_inactive_bg_color #{"" + $tab_inactive_bg_color};
 
 /* shadow effects */
 @define-color light_shadow #{"" + $light_shadow};
