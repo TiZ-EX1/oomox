@@ -113,6 +113,8 @@ set +u
 [[ "$BTN_FG" ]] || BTN_FG=$FG
 [[ "$TAB_ACTIVE_BG" ]] || TAB_ACTIVE_BG=$BG
 [[ "$TAB_INACTIVE_BG" ]] || TAB_INACTIVE_BG=$(shade $TAB_ACTIVE_BG 0.8)
+[[ "$TOOLTIP_BG" ]] || TOOLTIP_BG=000000
+[[ "$TOOLTIP_FG" ]] || TOOLTIP_FG=ffffff
 
 # Re-enable unbound checking.
 set -u
@@ -139,6 +141,8 @@ for FILEPATH in "${PATHLIST[@]}"; do
 		-e 's/%TXT_FG%/'"$TXT_FG"'/g' \
 		-e 's/%MENU_BG%/'"$MENU_BG"'/g' \
 		-e 's/%MENU_FG%/'"$MENU_FG"'/g' \
+		-e 's/%TOOLTIP_BG%/'"$TOOLTIP_BG"'/g' \
+		-e 's/%TOOLTIP_FG%/'"$TOOLTIP_FG"'/g' \
 		-e 's/%BTN_BG%/'"$BTN_BG"'/g' \
 		-e 's/%BTN_FG%/'"$BTN_FG"'/g' \
 		-e 's/%HDR_BTN_BG%/'"$HDR_BTN_BG"'/g' \
