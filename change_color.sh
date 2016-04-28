@@ -130,7 +130,7 @@ done
 
 cd "$DEST_PATH"
 for FILEPATH in "${PATHLIST[@]}"; do
-	find $FILEPATH -type f -exec sed -i \
+	find "$FILEPATH" -type f -exec sed -i \
 		-e 's/%BG%/'"$BG"'/g' \
 		-e 's/%FG%/'"$FG"'/g' \
 		-e 's/%SEL_BG%/'"$SEL_BG"'/g' \
