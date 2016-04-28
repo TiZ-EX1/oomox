@@ -19,7 +19,7 @@ print_usage() {
 shade () {
 	local out=""
 	for octet in ${1:0:2} ${1:2:2} ${1:4:2}; do
-		out+=$(printf "%x" $(printf "(%d * $2 + 0.5) / 1\n" 0x$octet | bc))
+		out+=$(printf %x $(printf "(%d * $2 + 0.5) / 1\n" 0x$octet | bc))
 	done; echo $out
 }
 
@@ -95,13 +95,16 @@ GRADIENT=${GRADIENT-0}
 OUTPUT_THEME_NAME="${OUTPUT_THEME_NAME:-oomox-$THEME}"
 DEST_PATH="$HOME/.themes/${OUTPUT_THEME_NAME/\//-}"
 
+# Temporarily turn off unbound checking.
+set +u
+
 # Make sure required colors are present.
-[[ "$BG" ]] || { echo "FATAL: BG color is required!"; exit 1 }
-[[ "$FG" ]] || { echo "FATAL: FG color is required!"; exit 1 }
-[[ "$SEL_BG" ]] || { echo "FATAL: SEL_BG color is required!"; exit 1 }
-[[ "$SEL_FG" ]] || { echo "FATAL: SEL_FG color is required!"; exit 1 }
-[[ "$TXT_BG" ]] || { echo "FATAL: TXT_BG color is required!"; exit 1 }
-[[ "$TXT_FG" ]] || { echo "FATAL: TXT_FG color is required!"; exit 1 }
+[[ "$BG" ]] || { echo "FATAL: BG color is required!"; exit 1; }
+[[ "$FG" ]] || { echo "FATAL: FG color is required!"; exit 1; }
+[[ "$SEL_BG" ]] || { echo "FATAL: SEL_BG color is required!"; exit 1; }
+[[ "$SEL_FG" ]] || { echo "FATAL: SEL_FG color is required!"; exit 1; }
+[[ "$TXT_BG" ]] || { echo "FATAL: TXT_BG color is required!"; exit 1; }
+[[ "$TXT_FG" ]] || { echo "FATAL: TXT_FG color is required!"; exit 1; }
 
 # Derive optional colors from required colors.
 [[ "$MENU_BG" ]] || MENU_BG=$BG
@@ -110,6 +113,9 @@ DEST_PATH="$HOME/.themes/${OUTPUT_THEME_NAME/\//-}"
 [[ "$BTN_FG" ]] || BTN_FG=$FG
 [[ "$TAB_ACTIVE_BG" ]] || TAB_ACTIVE_BG=$BG
 [[ "$TAB_INACTIVE_BG" ]] || TAB_INACTIVE_BG=$(shade $TAB_ACTIVE_BG 0.8)
+
+# Re-enable unbound checking.
+set -u
 
 test "$SRC_PATH" = "$DEST_PATH" && echo "can't do that" && exit 1
 
