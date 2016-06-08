@@ -179,7 +179,7 @@ style "clearlooks-notebook" = "clearlooks-notebook-bg" {
 
 	engine "clearlooks" {
 		radius = %ROUNDNESS%.0
-		contrast = 0.8
+		contrast = 0.85
 	}
 }
 
