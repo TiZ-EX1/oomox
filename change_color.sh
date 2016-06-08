@@ -85,15 +85,6 @@ if [[ ${THEME} == */* ]] || [[ ${THEME} == *.* ]] ; then
 else
 	source "$SRC_PATH/colors/$THEME"
 fi
-HDR_BTN_BG=${HDR_BTN_BG-$BTN_BG}
-HDR_BTN_FG=${HDR_BTN_FG-$BTN_FG}
-GTK3_GENERATE_DARK=$(echo ${GTK3_GENERATE_DARK-True} | tr '[:upper:]' '[:lower:]')
-ROUNDNESS=${ROUNDNESS-2}
-SPACING=${SPACING-3}
-GRADIENT=${GRADIENT-0}
-
-OUTPUT_THEME_NAME="${OUTPUT_THEME_NAME:-oomox-$THEME}"
-DEST_PATH="$HOME/.themes/${OUTPUT_THEME_NAME/\//-}"
 
 # Temporarily turn off unbound checking.
 set +u
@@ -118,6 +109,16 @@ set +u
 
 # Re-enable unbound checking.
 set -u
+
+HDR_BTN_BG=${HDR_BTN_BG:-$BTN_BG}
+HDR_BTN_FG=${HDR_BTN_FG:-$BTN_FG}
+GTK3_GENERATE_DARK=$(echo ${GTK3_GENERATE_DARK-True} | tr '[:upper:]' '[:lower:]')
+ROUNDNESS=${ROUNDNESS:-2}
+SPACING=${SPACING:-3}
+GRADIENT=${GRADIENT:-0}
+
+OUTPUT_THEME_NAME="${OUTPUT_THEME_NAME:-oomox-$THEME}"
+DEST_PATH="$HOME/.themes/${OUTPUT_THEME_NAME/\//-}"
 
 test "$SRC_PATH" = "$DEST_PATH" && echo "can't do that" && exit 1
 
