@@ -123,7 +123,7 @@ style "murrine-default" {
 		animation = FALSE
 		arrowstyle = 1 # 0 = normal arrows, 1 = filled arrows
 		border_shades = { 1.0, 1.0 } # gradient to draw on border
-		border_colors = { mix(0.2, @fg_color, @bg_color), mix(0.2, @fg_color, @bg_color) }
+		#border_colors = { mix(0.2, @fg_color, @bg_color), mix(0.2, @fg_color, @bg_color) }
 		colorize_scrollbar = FALSE
 		comboboxstyle = 0 # 0 = normal combobox, 1 = colorized combobox below arrow
 		contrast = 0.8 # overal contrast with borders
@@ -178,7 +178,8 @@ style "clearlooks-notebook" = "clearlooks-notebook-bg" {
 	ythickness = 2
 
 	engine "clearlooks" {
-		radius = 0.1
+		radius = %ROUNDNESS%.0
+		contrast = 0.8
 	}
 }
 
@@ -192,7 +193,7 @@ style "murrine-button"  = "murrine-wider" {
 	bg[INSENSITIVE] = shade (0.75, @btn_bg_color)
 
 	engine "murrine" {
-		border_colors = { mix(0.2, @btn_fg_color, @btn_bg_color), mix(0.2, @btn_fg_color, @btn_bg_color) }
+		border_colors = { shade(0.8, mix(0.5, @bg_color, @btn_bg_color)), shade(0.8, mix(0.5, @bg_color, @btn_bg_color)) }
 		roundness = %ROUNDNESS%
 	}
 }
