@@ -8,13 +8,13 @@
 @include exports("osd") {
     overlay.osd { background-color: transparent; }
 
-    osd {
+    .osd {
         &.background {
             background-color: alpha($osd_bg, .8);
             color: $osd_fg;
         }
 
-        frame {
+        .frame {
             background-clip: border-box;
             background-origin: border-box;
         }
@@ -103,29 +103,6 @@
             border: 1px solid shade($osd_bg, .9);
             /* when there's no pixbuf yet */
             background-color: $osd_bg;
-        }
-    }
-
-    .osd progressBar, progressBar.osd {
-        -GtkProgressBar-xspacing: 0;
-        -GtkProgressBar-yspacing: 2px;
-        -GtkProgressBar-min-horizontal-bar-height: 2px;
-
-        padding: 0;
-
-        &.trough {
-            padding: 0;
-            border-style: none;
-            border-radius: 0;
-            background-image: none;
-            background-color: transparent;
-        }
-
-        &.progressbar {
-            border-style: none;
-            border-radius: 0;
-            background-color: $selected_bg_color;
-            background-image: none;
         }
     }
 }

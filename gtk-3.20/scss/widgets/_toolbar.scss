@@ -28,9 +28,9 @@
         padding: 0 ($spacing * 2);
     }
 
-    button { @include button($bg, $fg); }
+    button { @include button($header_button_bg_color, $header_button_fg_color); }
 
-    button.linked, .linked button { @include linked_button($bg); }
+    .linked > button { @include linked_button($bg); }
 
     combobox, button {
         padding: $spacing - 1px;
@@ -46,7 +46,7 @@
     &.vertical separator { margin: ($spacing + 2px) 1px ($spacing + 2px) 0; }
 
     separator, separator:disabled {
-        color: shade($bg, ($contrast + .1));
+        color: shade($bg, ($contrast - .2));
         border-color: currentColor;
 
         -GtkWidget-window-dragging: true;
@@ -64,6 +64,10 @@
         &.inline-toolbar {
             background-image: none;
             background-color: transparent;
+
+            button { @include button($toolbar_bg_color, $toolbar_fg_color); }
+
+            .linked > button { @include linked_button($toolbar_bg_color); }
         }
     }
 
@@ -106,9 +110,11 @@
 
         .tiled &, .maximized & { border-radius: 0; }
 
-        .title { font: bold; }
+        .title { font-weight: bold; }
 
-        .titlebutton {
+        separator.titlebutton { margin-left: $spacing * 2; }
+
+        button.titlebutton {
             padding: $spacing;
             border: 0;
             background-image: none;

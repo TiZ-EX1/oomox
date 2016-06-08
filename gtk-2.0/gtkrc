@@ -123,6 +123,7 @@ style "murrine-default" {
 		animation = FALSE
 		arrowstyle = 1 # 0 = normal arrows, 1 = filled arrows
 		border_shades = { 1.0, 1.0 } # gradient to draw on border
+		border_colors = { mix(0.2, @fg_color, @bg_color), mix(0.2, @fg_color, @bg_color) }
 		colorize_scrollbar = FALSE
 		comboboxstyle = 0 # 0 = normal combobox, 1 = colorized combobox below arrow
 		contrast = 0.8 # overal contrast with borders
@@ -142,7 +143,7 @@ style "murrine-default" {
 		menustyle = 0 # 0 = none, 1 = vertical striped
 		progressbarstyle = 0 # 0 = none, 1 = diagonal striped, 2 = vertical striped
 		reliefstyle = 0 # 0 = flat, 1 = inset, 2 = shadow, 3 = shadow with gradient, 4 = stronger shadow with gradient
-		roundness = 2 # roundness of widgets
+		roundness = %ROUNDNESS% # roundness of widgets
 		scrollbarstyle = 0 # 0 = none, 1 = circles, 2 = handles, 3 = diagonal stripes, 4 = diagonal stripes and handles, 5 = horizontal stripes, 6 = horizontal stripes and handles
 		sliderstyle = 0 # 0 = none, 1 = handles
 		stepperstyle = 1 # 0 = standard, 1 = integrated stepper handles
@@ -188,9 +189,11 @@ style "murrine-button"  = "murrine-wider" {
 	bg[PRELIGHT] = shade (1.10, @btn_bg_color)
 	bg[SELECTED] = shade (0.7, @btn_bg_color)
 	bg[ACTIVE] = shade (0.95, @btn_bg_color)
-	bg[INSENSITIVE] = shade (0.85, @btn_bg_color)
+	bg[INSENSITIVE] = shade (0.75, @btn_bg_color)
 
 	engine "murrine" {
+		border_colors = { mix(0.2, @btn_fg_color, @btn_bg_color), mix(0.2, @btn_fg_color, @btn_bg_color) }
+		roundness = %ROUNDNESS%
 	}
 }
 
@@ -267,6 +270,10 @@ style "murrine-treeview" {
 	}
 }
 
+style "murrine-frame" = "murrine-wide" {
+	bg[NORMAL] = mix(0.08, @fg_color, @bg_color)
+}
+
 style "murrine-frame-title" {
 	fg[NORMAL] = lighter (@fg_color)
 }
@@ -311,6 +318,7 @@ style "clearlooks-base-radiocheck" = "clearlooks-radiocheck" {
 style "murrine-entry" = "murrine-wider" {
 	engine "murrine" {
 		border_shades = { 1.15, 1.15 }
+		roundness = %ROUNDNESS%
 	}
 }
 
@@ -361,8 +369,6 @@ style "murrine-menu-item" = "murrine-wider" {
 	fg[SELECTED] = @selected_fg_color
 	fg[ACTIVE] = @selected_fg_color
 	fg[INSENSITIVE] = mix (0.5, @menu_bg_color, @menu_fg_color)
-
-	text[NORMAL] = @selected_bg_color
 
 	engine "murrine" {
 		textstyle = 0
@@ -686,7 +692,7 @@ widget_class "*Chrom*Button*" style "chromium-toolbar-button"
 
 class "GtkWidget" style "murrine-default"
 
-class "GtkFrame" style "murrine-wide"
+class "GtkFrame" style "murrine-frame"
 class "MetaFrames" style "metacity-frame"
 class "GtkWindow" style "metacity-frame"
 

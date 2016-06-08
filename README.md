@@ -1,11 +1,19 @@
 ﻿oomox
 =====
 
-## Graphical application for generating different color variations of Numix theme (GTK2, GTK3)
+Graphical application for generating different color variations of Numix theme (GTK2, GTK3)
 
-![Screenshot GUI 1](https://raw.githubusercontent.com/actionless/oomox/master/screenshot_gui.png "Screenshot GUI 1")
+  * [Arch Linux](#arch-linux "")
+  * [Ubuntu](#ubuntu "")
+  * [Other distributions](#other-distributions "")
+  * [Using with tiling WMs](#using-with-tiling-wms "")
+  * [Spotify](#spotify "")
+  * [Review article](#review-article "")
+  * [Demo video](#demo-video "")
 
-![Screenshot GUI 2](https://raw.githubusercontent.com/actionless/oomox/master/screenshot_gui_retro.png "Screenshot GUI 2")
+
+![Screenshot GUI 1](https://raw.githubusercontent.com/actionless/oomox/master/screenshot.png "Screenshot GUI 1")
+
 
 ### Arch Linux:
 
@@ -51,11 +59,12 @@ You need to have `python3-gobject` binding and those executables:
  - `glib-compile-schemas`
  - `gdk-pixbuf-pixdata`
  - `sass`
+For GTK2 you need murrine engine which can be not installed by default.
 
 ##### Ubuntu
 
 ```
-sudo apt install ruby libgdk-pixbuf2.0-dev libxml2-utils python3-gi
+sudo apt install ruby libgdk-pixbuf2.0-dev libxml2-utils python3-gi gtk2-engines-murrine
 sudo gem install sass
 ```
 
@@ -78,3 +87,25 @@ ls colors
 
 next select oomox_current in your appearance config tool (for example, _lxappearance_)
 
+
+#### Spotify:
+```sh
+git clone https://github.com/actionless/oomox.git
+cd oomox
+ls colors
+./oomoxify.sh gnome_noble  # or other theme from above
+```
+Make sure to remove `~/.config/oomox/spotify_backup` when upgrading Spotify to the new version.
+
+Also you can replace font with `-f` argument, see `-h` for usage.
+
+
+#### Review article
+
+To learn more about it you can check this article: http://www.webupd8.org/2016/05/easily-create-your-own-numix-based-gtk.html
+
+#### Demo video
+
+One of the users, Spatry, made this cool demo video:
+
+[![video](https://img.youtube.com/vi/Dh5TuIYQ6jo/0.jpg)](https://www.youtube.com/watch?v=Dh5TuIYQ6jo)

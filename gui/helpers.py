@@ -11,21 +11,85 @@ user_theme_dir = os.path.join(
         "XDG_CONFIG_HOME",
         os.path.join(os.environ.get("HOME"), ".config/")
     ),
-    "oomox/"
+    "oomox/colors/"
 )
 colors_dir = os.path.join(theme_dir, "colors/")
 
 THEME_KEYS = [
-    'BG',
-    'FG',
-    'MENU_BG',
-    'MENU_FG',
-    'SEL_BG',
-    'SEL_FG',
-    'TXT_BG',
-    'TXT_FG',
-    'BTN_BG',
-    'BTN_FG',
+    {
+        'key': 'BG',
+        'type': 'color',
+    },
+    {
+        'key': 'FG',
+        'type': 'color',
+    },
+    {
+        'key': 'MENU_BG',
+        'type': 'color',
+    },
+    {
+        'key': 'MENU_FG',
+        'type': 'color',
+    },
+    {
+        'key': 'SEL_BG',
+        'type': 'color',
+    },
+    {
+        'key': 'SEL_FG',
+        'type': 'color',
+    },
+    {
+        'key': 'TXT_BG',
+        'type': 'color',
+    },
+    {
+        'key': 'TXT_FG',
+        'type': 'color',
+    },
+    {
+        'key': 'BTN_BG',
+        'type': 'color',
+    },
+    {
+        'key': 'BTN_FG',
+        'type': 'color',
+    },
+    {
+        'key': 'HDR_BTN_BG',
+        'fallback_key': 'BTN_BG',
+        'type': 'color',
+    },
+    {
+        'key': 'HDR_BTN_FG',
+        'fallback_key': 'BTN_FG',
+        'type': 'color',
+    },
+    {
+        'key': 'GTK3_GENERATE_DARK',
+        'type': 'bool',
+        'fallback_value': True,
+        'display_name': '(GTK3) Add dark variant'
+    },
+    {
+        'key': 'ROUNDNESS',
+        'type': 'int',
+        'fallback_value': 2,
+        'display_name': 'Roundness'
+    },
+    {
+        'key': 'SPACING',
+        'type': 'int',
+        'fallback_value': 3,
+        'display_name': '(GTK3) Spacing'
+    },
+    {
+        'key': 'GRADIENT',
+        'type': 'float',
+        'fallback_value': 0.0,
+        'display_name': '(GTK3) Gradient'
+    },
 ]
 
 
@@ -64,14 +128,39 @@ def convert_theme_color_to_gdk(theme_color):
     return gdk_color
 
 
+def convert_gdk_to_theme_color(gdk_color):
+    return "".join([
+        "{0:02x}".format(int(n * 255))
+        for n in (gdk_color.red, gdk_color.green, gdk_color.blue)
+    ])
+
+
 def resolve_color_links(colorscheme):
-    # @TODO: remove it
-    for key, value in colorscheme.items():
-        if value.startswith("$"):
+    # @TODO: rename it
+    for key_obj in THEME_KEYS:
+        key = key_obj['key']
+        fallback_key = key_obj.get('fallback_key')
+        fallback_value = key_obj.get('fallback_value')
+        value = colorscheme.get(key)
+        if not value and (fallback_key or fallback_value is not None):
+            if fallback_value is not None:
+                value = colorscheme[key] = fallback_value
+            else:
+                value = colorscheme[key] = colorscheme[fallback_key]
+        if not value:
+            colorscheme[key] = "ff3333"
+        elif isinstance(value, str) and value.startswith("$"):
             try:
                 colorscheme[key] = colorscheme[value.lstrip("$")]
             except KeyError:
                 colorscheme[key] = "ff3333"
+        if key_obj['type'] == 'bool':
+            if isinstance(value, str):
+                colorscheme[key] = value.lower() == 'true'
+        elif key_obj['type'] == 'int':
+            colorscheme[key] = int(value)
+        elif key_obj['type'] == 'float':
+            colorscheme[key] = float(value)
     return colorscheme
 
 
@@ -81,7 +170,9 @@ def bash_preprocess(preset_path):
         [
             "bash", "-c",
             "source " + preset_path + " ; " +
-            "".join("echo ${} ;".format(key) for key in THEME_KEYS)
+            "".join(
+                "echo ${{{}-None}} ;".format(obj['key']) for obj in THEME_KEYS
+            )
         ],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE
@@ -94,8 +185,11 @@ def bash_preprocess(preset_path):
 
     lines = process.stdout.decode("UTF-8").split()
     i = 0
-    for key in THEME_KEYS:
-        colorscheme[key] = lines[i]
+    for obj in THEME_KEYS:
+        value = lines[i]
+        if value == 'None':
+            value = None
+        colorscheme[obj['key']] = value
         i += 1
 
     return colorscheme
@@ -116,8 +210,7 @@ def read_colorscheme_from_path(preset_path):
     # migration workaround #2:
     if 'NOGUI' in colorscheme:
         colorscheme = bash_preprocess(preset_path)
-    else:
-        colorscheme = resolve_color_links(colorscheme)
+    colorscheme = resolve_color_links(colorscheme)
     return colorscheme
 
 
@@ -127,10 +220,16 @@ def read_colorscheme_from_preset(preset_name):
 
 def save_colorscheme(preset_name, colorscheme):
     path = os.path.join(user_theme_dir, preset_name)
-    with open(path, 'w') as f:
-        f.write("NAME={}\n".format(preset_name))
-        for key in THEME_KEYS:
-            f.write("{}={}\n".format(key, colorscheme[key]))
+    try:
+        with open(path, 'w') as f:
+            f.write("NAME={}\n".format(preset_name))
+            for field in THEME_KEYS:
+                f.write("{}={}\n".format(
+                    field['key'], colorscheme[field['key']]
+                ))
+    except FileNotFoundError:
+        mkdir_p(os.path.dirname(path))
+        return save_colorscheme(preset_name, colorscheme)
     return path
 
 

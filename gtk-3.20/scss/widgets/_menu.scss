@@ -185,13 +185,6 @@
     }
 }
 
-%undecorated_button {
-    border-color: transparent;
-    background-color: transparent;
-    background-image: none;
-    box-shadow: none;
-}
-
 
 /*********
  ! Popover
@@ -209,7 +202,8 @@
         box-shadow: 0 3px 6px alpha($black, .16);
 
         .csd &, & {
-            @include border($menu_bg_color);
+            /*@include border($menu_bg_color);*/
+            @include border(alpha($menu_fg_color, .5));
             border-width: 1px;
             border-style: solid;
         }
@@ -262,14 +256,14 @@
             }
         }
 
-        frame {
+        .frame {
             border-color: border_normal($menu_bg_color);
             border-radius: $roundness;
         }
 
-        entry { @include entry($menu_bg_color, $menu_fg_color);  }
+        entry { @include entry($base_color, $text_color);  }
 
-        button { @include button($menu_bg_color, $menu_fg_color);  }
+        button { @include button($header_button_bg_color, $header_button_fg_color);  }
 
         > list, > .view, > toolbar {
             border-style: none;
